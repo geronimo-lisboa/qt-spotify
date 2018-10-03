@@ -27,7 +27,10 @@ SOURCES += \
         spotyxlogic.cpp \
     2-model/AuthenticationService.cpp \
     3-infra/AuthenticationPage.cpp \
-    3-infra/AuthenticationServer.cpp
+    3-infra/AuthenticationServer.cpp \
+    2-model/entities/User.cpp \
+    3-infra/repository/UserRepository.cpp \
+    3-infra/repository/DatabaseManager.cpp
 
 HEADERS += \
         spotyxlogic.h \
@@ -35,7 +38,10 @@ HEADERS += \
     3-infra/AuthenticationPage.h \
     3-infra/AuthenticationServer.h \
     exceptions/IniFileNotPresentException.h \
-    exceptions/exceptionBox.h
+    exceptions/exceptionBox.h \
+    2-model/entities/User.h \
+    3-infra/repository/UserRepository.h \
+    3-infra/repository/DatabaseManager.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
