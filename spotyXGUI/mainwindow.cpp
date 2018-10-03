@@ -3,12 +3,21 @@
 #include <QMessageBox>
 #include <spotyxlogic.h>
 #include <2-model/AuthenticationService.h>
+#include <2-model/UserService.h>
+#include <2-model/entities/User.h>
+#include <vector>
 #include <QDebug>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //instancia o userservice
+    userService = std::make_unique<model::UserService>();
+    connect(ui->btnTesteUserSevice, &QPushButton::pressed,
+            this,&MainWindow::testeUserService);
+
+    //instancia o authenticationService
     model::AuthenticationService* authService = new model::AuthenticationService(this);
     connect(authService,
             &model::AuthenticationService::authenticationSuccessful,
@@ -29,26 +38,20 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->btn, &QPushButton::pressed, this, [authService](){
        authService->beginAuthentication();
     });
-
-//    teste::Spotylibrary* testeObj = new teste::Spotylibrary(this);
-//    connect(testeObj,
-//            &teste::Spotylibrary::testSignal,
-//            this,
-//            [this](QString str){
-//        QMessageBox::StandardButton reply;
-//        reply = QMessageBox::question(this, "Test", str,
-//                                      QMessageBox::Yes|QMessageBox::No);
-//        if (reply == QMessageBox::Yes) {
-//          qDebug() << "Yes was clicked";
-//          QApplication::quit();
-//        } else {
-//          qDebug() << "Yes was *not* clicked";
-//        }
-//    });
-//    testeObj->foo();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::testeUserService()
+{
+    std::shared_ptr<model::User> user = std::make_shared<model::User>("code","foobar");
+    const int sz0 = userService->getUsers()->size();
+    userService->addUser(user);
+    const int sz1 = userService->getUsers()->size();
+    assert(sz0+1 == sz1);
+    auto createdUser = userService->getUser(user->getId());
+    assert(*createdUser == *user);
 }

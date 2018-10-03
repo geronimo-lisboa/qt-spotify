@@ -18,10 +18,13 @@ namespace infra
     public:
         typedef vector<shared_ptr<model::User>> ListOfUsers;
         UserRepository(QSqlDatabase& db);
-        void init();
-        void addUser(std::shared_ptr<model::User> usu);
-        void updateUser(std::shared_ptr<model::User> usu);
-        unique_ptr<ListOfUsers> getUsers();
+        //Todos os métodos dessa classe são stateless
+        void init() const;
+        void addUser(std::shared_ptr<model::User> usu) const;
+        void updateUser(std::shared_ptr<model::User> usu) const;
+        unique_ptr<ListOfUsers> getUsers()const;
+        unique_ptr<ListOfUsers> getUsers(const int id)const;
+        void purgeUsers()const;
     };
 }
 #endif

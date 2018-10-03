@@ -7,6 +7,13 @@ model::User::User(QString code, QString name,  int id)
     this->id = id;
 }
 
+model::User::User(QString code, QString name)
+{
+    this->code = code;
+    this->name = name;
+
+}
+
 QString model::User::getCode()
 {
     return code;
@@ -35,4 +42,12 @@ int model::User::getId()
 void model::User::setId(int id)
 {
     this->id = id;
+}
+
+bool model::User::operator==(const model::User &b)
+{
+    bool x = (b.name == this->name) ;
+    bool y = (b.id == this->id);
+    return ( x && y );
+
 }

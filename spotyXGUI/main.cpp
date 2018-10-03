@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
         MainWindow w;
         w.show();
         return a.exec();
-    } catch (IniFileNotPresentException& ex) {
+    } catch (std::runtime_error& ex) {
         showExceptionBox(ex);
         return EXIT_FAILURE;
     }

@@ -30,7 +30,8 @@ SOURCES += \
     3-infra/AuthenticationServer.cpp \
     2-model/entities/User.cpp \
     3-infra/repository/UserRepository.cpp \
-    3-infra/repository/DatabaseManager.cpp
+    3-infra/repository/DatabaseManager.cpp \
+    2-model/UserService.cpp
 
 HEADERS += \
         spotyxlogic.h \
@@ -41,7 +42,10 @@ HEADERS += \
     exceptions/exceptionBox.h \
     2-model/entities/User.h \
     3-infra/repository/UserRepository.h \
-    3-infra/repository/DatabaseManager.h
+    3-infra/repository/DatabaseManager.h \
+    2-model/UserService.h \
+    exceptions/TwoRecordsWithSameIdException.h \
+    exceptions/SqlException.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
