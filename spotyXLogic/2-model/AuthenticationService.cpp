@@ -6,6 +6,9 @@
 #include <string>
 #include <sstream>
 #include <QWebEngineView>
+#include <QDebug>
+#include <QFileInfo>
+#include "exceptions/IniFileNotPresentException.h"
 using namespace stefanfrings;
 
 
@@ -13,6 +16,12 @@ using namespace stefanfrings;
 model::AuthenticationService::AuthenticationService(QObject *parent)
     :QObject(parent)
 {
+    QFileInfo checkFile(INI_FILE_PATH);
+    if(!checkFile.exists() || !checkFile.isFile())
+    {
+        qDebug(INI_FILE_PATH);
+        throw IniFileNotPresentException();
+    }
     stateString = QString::fromStdString( "ixiquicaca" );
     //Cria o servidor pra onde o spotify vai mandar o código
     QSettings* listenerSettings = new QSettings(INI_FILE_PATH, QSettings::IniFormat, this);

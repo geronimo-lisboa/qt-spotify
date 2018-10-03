@@ -33,7 +33,9 @@ HEADERS += \
         spotyxlogic.h \
     2-model/AuthenticationService.h \
     3-infra/AuthenticationPage.h \
-    3-infra/AuthenticationServer.h
+    3-infra/AuthenticationServer.h \
+    exceptions/IniFileNotPresentException.h \
+    exceptions/exceptionBox.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
@@ -44,4 +46,4 @@ unix {
 QT += network
 include(QtWebApp/QtWebApp/httpserver/httpserver.pri)
 
-DEFINES += INI_FILE_PATH=\\\"../spotify-authentication-test.ini\\\"
+DEFINES += INI_FILE_PATH=\\\"D:/programacao/estudos-qt/projetoProva/spotyX/spotify-authentication-test.ini\\\"
