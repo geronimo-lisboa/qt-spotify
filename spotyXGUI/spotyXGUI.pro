@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+QT       += network sql webenginewidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = spotyXGUI

@@ -24,11 +24,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        spotyxlogic.cpp
+        spotyxlogic.cpp \
+    2-model/AuthenticationService.cpp \
+    3-infra/AuthenticationPage.cpp \
+    3-infra/AuthenticationServer.cpp
 
 HEADERS += \
-        spotyxlogic.h
+        spotyxlogic.h \
+    2-model/AuthenticationService.h \
+    3-infra/AuthenticationPage.h \
+    3-infra/AuthenticationServer.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+
+#inclui o QtWebApp e o arquivo de confuguracao
+QT += network
+include(QtWebApp/QtWebApp/httpserver/httpserver.pri)
+
+DEFINES += INI_FILE_PATH=\\\"../spotify-authentication-test.ini\\\"
