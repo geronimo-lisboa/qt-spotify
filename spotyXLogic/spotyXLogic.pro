@@ -45,7 +45,8 @@ HEADERS += \
     3-infra/repository/DatabaseManager.h \
     2-model/UserService.h \
     exceptions/TwoRecordsWithSameIdException.h \
-    exceptions/SqlException.h
+    exceptions/SqlException.h \
+    3-infra/authenticaton/AuthenticationDTO.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

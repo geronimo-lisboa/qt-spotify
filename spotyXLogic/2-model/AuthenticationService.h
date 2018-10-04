@@ -3,7 +3,7 @@
 #include <QtCore>
 #include <memory>
 #include <QtCore/qglobal.h>
-
+#include <3-infra/authenticaton/AuthenticationDTO.h>
 namespace stefanfrings{
     class HttpListener;
 }
@@ -11,6 +11,8 @@ namespace infra {
     class AuthenticationServer;
     class AuthenticationPage;
 }
+
+
 namespace model {
 ////Classe responsável pela autenticação do usuário. O usuário precisa
 /// acessar a página do spotify pra conseguir autenticar. Essa classe
@@ -29,11 +31,12 @@ namespace model {
     public:
         AuthenticationService(QObject* parent=nullptr);
         ~AuthenticationService();
+        infra::AuthenticationDTO getAcessAndRefreshTokens(QString code);
         void beginAuthentication();
     private slots:
         void authenticationSuccessfulSlot(QString code);
     signals:
-        void authenticationSuccessful(QString code);
+        void authenticationSuccessful(infra::AuthenticationDTO authDto);
     };
 }
 #endif

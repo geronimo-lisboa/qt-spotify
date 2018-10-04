@@ -22,17 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(authService,
             &model::AuthenticationService::authenticationSuccessful,
             this,
-            [this](QString code){
-                QMessageBox::StandardButton reply;
-                reply = QMessageBox::question(this, "Test", code,
-                                              QMessageBox::Yes|QMessageBox::No);
-                if (reply == QMessageBox::Yes) {
-                  qDebug() << "Yes was clicked";
-                  QApplication::quit();
-                } else {
-                  qDebug() << "Yes was *not* clicked";
-                }
-
+            [this](infra::AuthenticationDTO authDto){
+            qDebug("o dto está aqui?");
     });
 
     connect(ui->btn, &QPushButton::pressed, this, [authService](){
