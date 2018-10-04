@@ -44,6 +44,16 @@ void model::User::setId(int id)
     this->id = id;
 }
 
+shared_ptr<model::UserSpotifyData> model::User::getSpotifyData()
+{
+    return spotifyData;
+}
+
+void model::User::setSpotifyData(shared_ptr<model::UserSpotifyData> d)
+{
+    spotifyData = d;
+}
+
 bool model::User::operator==(const model::User &b)
 {
     bool x = (b.name == this->name) ;

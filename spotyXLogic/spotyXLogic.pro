@@ -31,7 +31,11 @@ SOURCES += \
     2-model/entities/User.cpp \
     3-infra/repository/UserRepository.cpp \
     3-infra/repository/DatabaseManager.cpp \
-    2-model/UserService.cpp
+    2-model/UserService.cpp \
+    2-model/entities/UserSpotifyData.cpp \
+    3-infra/repository/UserSpotifyDataRepository.cpp \
+    3-infra/tokenRefresh/TokenRefresh.cpp \
+    3-infra/PostContentBuilder.cpp
 
 HEADERS += \
         spotyxlogic.h \
@@ -46,7 +50,11 @@ HEADERS += \
     2-model/UserService.h \
     exceptions/TwoRecordsWithSameIdException.h \
     exceptions/SqlException.h \
-    3-infra/authenticaton/AuthenticationDTO.h
+    3-infra/authenticaton/AuthenticationDTO.h \
+    2-model/entities/UserSpotifyData.h \
+    3-infra/repository/UserSpotifyDataRepository.h \
+    3-infra/tokenRefresh/TokenRefresh.h \
+    3-infra/PostContentBuilder.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

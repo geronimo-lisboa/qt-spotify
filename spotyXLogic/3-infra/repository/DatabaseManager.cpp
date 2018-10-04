@@ -1,6 +1,7 @@
 #include "3-infra/repository/DatabaseManager.h"
 #include <QSqlDatabase>
 #include "3-infra/repository/UserRepository.h"
+#include "3-infra/repository/UserSpotifyDataRepository.h"
 
 infra::DatabaseManager &infra::DatabaseManager::instance()
 {
@@ -11,6 +12,11 @@ infra::DatabaseManager &infra::DatabaseManager::instance()
 std::shared_ptr<infra::UserRepository> infra::DatabaseManager::getUserRepository()
 {
     return this->userRepository;
+}
+
+std::shared_ptr<infra::UserSpotifyDataRepository> infra::DatabaseManager::getUserSpotifyDataRepository()
+{
+    return this->userSpotifyDataRepository;
 }
 
 infra::DatabaseManager::~DatabaseManager()
@@ -24,7 +30,11 @@ infra::DatabaseManager::DatabaseManager(const QString &path):
 {
     mDatabase->setDatabaseName(path);
     mDatabase->open();
-    userRepository = std::make_shared<UserRepository>(*mDatabase);
+
+    userSpotifyDataRepository = std::make_shared<UserSpotifyDataRepository>(*mDatabase);
+    userSpotifyDataRepository->init();
+
+    userRepository = std::make_shared<UserRepository>(*mDatabase,userSpotifyDataRepository);
     userRepository->init();
 }
 

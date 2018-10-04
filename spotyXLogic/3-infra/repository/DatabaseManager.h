@@ -9,15 +9,18 @@ class QSqlDatabase;
 namespace infra
 {
     class UserRepository;
+    class UserSpotifyDataRepository;
 
     class DatabaseManager
     {
     public:
         static DatabaseManager& instance();
         std::shared_ptr<UserRepository> getUserRepository();
+        std::shared_ptr<UserSpotifyDataRepository> getUserSpotifyDataRepository();
         ~DatabaseManager();
     protected:
         std::shared_ptr<UserRepository> userRepository;
+        std::shared_ptr<UserSpotifyDataRepository> userSpotifyDataRepository;
         DatabaseManager(const QString& path = DATABASE_FILENAME);
         DatabaseManager& operator=(const DatabaseManager& rhs);
     private:
