@@ -11,6 +11,7 @@ namespace model
         QString code;
         QString name;
     public:
+        const static int INVALID_ID = -1;
         User(QString code, QString name, int id);
         User(QString code, QString name);
         QString getCode();

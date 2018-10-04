@@ -11,7 +11,7 @@ model::User::User(QString code, QString name)
 {
     this->code = code;
     this->name = name;
-
+    this->id = INVALID_ID;
 }
 
 QString model::User::getCode()
