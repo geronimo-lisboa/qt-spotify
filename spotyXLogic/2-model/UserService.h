@@ -5,6 +5,11 @@
 #include "3-infra/repository/DatabaseManager.h"
 #include "3-infra/repository/UserRepository.h"
 using namespace std;
+
+namespace infra {
+    class TokenRefresh;
+}
+
 namespace model
 {
     class User;
@@ -14,6 +19,7 @@ namespace model
         infra::DatabaseManager& dbManager;
         shared_ptr<infra::UserRepository> userRepository;
         shared_ptr<infra::UserSpotifyDataRepository> userSpotifyRepository;
+        shared_ptr<infra::TokenRefresh> tokenRefresher;
     public:
         UserService();
         void addUser(shared_ptr<User> usu);

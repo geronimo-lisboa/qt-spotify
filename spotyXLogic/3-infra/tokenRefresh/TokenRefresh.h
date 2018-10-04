@@ -1,11 +1,13 @@
 #ifndef TokenRefresh_h
 #define TokenRefresh_h
 #include <QString>
+#include <QObject>
 namespace infra {
-    class AuthenticationDTO;
-    class TokenRefresh{
+    struct AuthenticationDTO;
+    class TokenRefresh : public QObject{
+        Q_OBJECT
     public:
-        TokenRefresh();
+        TokenRefresh(QObject *parent=nullptr);
         AuthenticationDTO refresh(QString oldRefreshToken);
     };
 }
