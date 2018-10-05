@@ -3,13 +3,24 @@
 #include <2-model/entities/User.h>
 #include <2-model/entities/UserSpotifyData.h>
 #include <3-infra/repository/DatabaseManager.h>
+#include <3-infra/repository/UserSpotifyDataRepository.h>
 #include <memory>
 #include <3-infra/PostContentBuilder.h>
 #include <QByteArray>
 #include <3-infra/EncodeClientIdClientSecret.h>
 #include <QTextCodec>
+#include <1-applicationServices/ListUsers.h>
 
 using namespace std;
+TEST(ListUserTest, IsTheListCorrect)
+{
+    auto userRepo = infra::DatabaseManager::instance().getUserRepository();
+    const int sz = userRepo->getUsers()->size();
+    applicationServices::ListUsers listUsers;
+    const int sz2 = listUsers.getUserList()->size();
+    EXPECT_TRUE(sz==sz2);
+}
+
 TEST(UtilitiesTest, ClientIdClientSecretEncoding)
 {
     infra::EncodeClientIdClientSecret encoder;
@@ -18,6 +29,18 @@ TEST(UtilitiesTest, ClientIdClientSecretEncoding)
     QString encodedDataAsString = QTextCodec::codecForUtfText(encodedData)->toUnicode(encodedData);
     QString target="QXV0aG9yaXphdGlvbjogQmFzaWMgNTY4ZjVjNTdjZDQ4NDQ3ZWI4YzU5ZmFmZGU5ZjFkMzQ6NDMxMzExOTZiMGZhNDg4NWFhNGFlOTMzOGNmNGM5NjE=";
     EXPECT_TRUE(encodedDataAsString == target);
+}
+
+TEST(UtilitiesTest, IsSpotifyDataUpdating)
+{
+    auto spotyRepo = infra::DatabaseManager::instance().getUserSpotifyDataRepository();
+    shared_ptr<model::User> dummy = std::make_shared<model::User>("x","x", 2);
+    auto spotyData0 = spotyRepo->getSpotifyData(*dummy);
+    spotyData0->accessToken="is this updated?";
+    spotyRepo->updateSpotifyData(spotyData0);
+    auto spotyData1 = spotyRepo->getSpotifyData(spotyData0->id);
+    EXPECT_TRUE(spotyData1->accessToken=="is this updated?");
+
 }
 
 TEST(UtilitiesTest, IsPostBuilderWorking)

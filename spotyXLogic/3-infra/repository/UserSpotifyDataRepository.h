@@ -24,6 +24,7 @@ namespace infra
         void addSpotifyData(std::shared_ptr<model::UserSpotifyData> d) const;
         void updateSpotifyData(std::shared_ptr<model::UserSpotifyData> d) const;
         shared_ptr<model::UserSpotifyData> getSpotifyData(model::User& usu);
+        shared_ptr<model::UserSpotifyData> getSpotifyData(int id);
         void purgeSpotifyData()const;
     };
 }

@@ -60,21 +60,33 @@ void infra::UserSpotifyDataRepository::addSpotifyData(std::shared_ptr<model::Use
 void infra::UserSpotifyDataRepository::updateSpotifyData(std::shared_ptr<model::UserSpotifyData> d) const
 {
     QSqlQuery query(database);
-    query.prepare("UPDATE userSpotifyData "
-                  "SET "
-                  "code, accessToken, tokenType, "
-                  "scope, expiresIn, refreshToken "
-                  "VALUES "
-                  " :code, :accessToken, :tokenType, "
-                  ":scope, :expiresIn, :refreshToken");
+    query.prepare(
+                " UPDATE userSpotifyData "
+                " SET "
+                " code=:code,"
+                " accessToken=:accessToken,"
+                " tokenType=:tokenType,"
+                " scope=:scope,"
+                " expiresIn=:expiresIn,"
+                " refreshToken=:refreshToken "
+                "WHERE id=:id"
+                );
     query.bindValue(":code",d->code);
     query.bindValue(":accessToken",d->accessToken);
-    query.bindValue(":code",d->code);
     query.bindValue(":tokenType",d->tokenType);
     query.bindValue(":scope",d->scope);
     query.bindValue(":expiresIn",d->expiresIn);
     query.bindValue(":refreshToken",d->refreshToken);
-    query.exec();
+    query.bindValue(":id", d->id);
+    bool ok = query.exec();
+    if(!ok)
+    {
+        QString lastQuery = query.lastQuery();
+        QString lastError = query.lastError().text();
+        qDebug(lastQuery.toUtf8());
+        qDebug(lastError.toUtf8());
+    }
+
 }
 
 shared_ptr<model::UserSpotifyData> infra::UserSpotifyDataRepository::getSpotifyData(model::User &usu)
@@ -82,6 +94,27 @@ shared_ptr<model::UserSpotifyData> infra::UserSpotifyDataRepository::getSpotifyD
     QSqlQuery query(database);
     query.prepare("SELECT * FROM userSpotifyData WHERE idUser=:idUser");
     query.bindValue(":idUser",usu.getId());
+    query.exec();
+    shared_ptr<model::UserSpotifyData>  d ;
+    while(query.next()){
+        d = make_shared<model::UserSpotifyData>();
+        d->id = query.value("id").toInt();
+        d->idUser = query.value("idUser").toInt();
+        d->code = query.value("code").toString();
+        d->accessToken = query.value("accessToken").toString();
+        d->tokenType = query.value("tokenType").toString();
+        d->scope = query.value("scope").toString();
+        d->expiresIn = query.value("expiresIn").toInt();
+        d->refreshToken = query.value("refreshToken").toString();
+    }
+    return d;
+}
+
+shared_ptr<model::UserSpotifyData> infra::UserSpotifyDataRepository::getSpotifyData(int id)
+{
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM userSpotifyData WHERE id=:id");
+    query.bindValue(":id",id);
     query.exec();
     shared_ptr<model::UserSpotifyData>  d ;
     while(query.next()){

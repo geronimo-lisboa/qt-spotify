@@ -65,7 +65,7 @@ unique_ptr<vector<shared_ptr<model::User>>> model::UserService::getUsers()
 void model::UserService::refreshToken(shared_ptr<model::User> user)
 {
     //vai no spotify e pede os tokens novos    
-    infra::AuthenticationDTO newData = tokenRefresher->refresh(user->getSpotifyData()->refreshToken);
+    infra::AuthenticationDTO newData = tokenRefresher->refresh(*user);
     std::shared_ptr<UserSpotifyData> usData = make_shared<UserSpotifyData>(newData,user->getId(), user->getSpotifyData()->id);
     //agora guarda o token novo
     user->setSpotifyData(usData);
