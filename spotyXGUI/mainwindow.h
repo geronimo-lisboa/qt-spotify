@@ -11,6 +11,7 @@ class MainWindow;
 
 namespace applicationServices {
     class ListUsers;
+    class CreateUser;
 }
 
 namespace model {
@@ -24,6 +25,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 private:
     std::unique_ptr<applicationServices::ListUsers> listUsersApplicationService;
+    std::unique_ptr<applicationServices::CreateUser> createNewUserApplicationService;
     std::unique_ptr<std::vector<std::shared_ptr<model::User>>> users;
     std::unique_ptr<UserWindow> userWindow;
 ////O PASSADO DISTANTE
@@ -33,7 +35,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 public slots:
-    void successfulAuthentication(infra::AuthenticationDTO authDto);
+    void btnOpenNewUserWindowPressed();
+    //void successfulAuthentication(infra::AuthenticationDTO authDto);
+    void successfulNewUserCreation(std::shared_ptr<model::User> user);
 private:
     Ui::MainWindow *ui;
 };

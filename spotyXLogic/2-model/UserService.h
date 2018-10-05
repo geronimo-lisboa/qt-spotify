@@ -22,6 +22,7 @@ namespace model
         shared_ptr<infra::TokenRefresh> tokenRefresher;
     public:
         UserService();
+        shared_ptr<User> createFromSpotifyData(QString code);
         void addUser(shared_ptr<User> usu);
         void updateUserSpotifyData(shared_ptr<User> usu, shared_ptr<UserSpotifyData> data);
         shared_ptr<User> getUser(int id);

@@ -2,6 +2,7 @@
 #include "2-model/entities/User.h"
 #include <exceptions/TwoRecordsWithSameIdException.h>
 #include "3-infra/tokenRefresh/TokenRefresh.h"
+#include "3-infra/UserDataFetcher.h"
 using namespace std;
 
 model::UserService::UserService():
@@ -10,6 +11,15 @@ model::UserService::UserService():
     userSpotifyRepository(dbManager.getUserSpotifyDataRepository()),
     tokenRefresher(std::make_shared<infra::TokenRefresh>())
 {
+}
+
+shared_ptr<model::User> model::UserService::createFromSpotifyData(QString accessToken)
+{
+    unique_ptr<infra::UserDataFetcher> fetcher = make_unique<infra::UserDataFetcher>();
+    QString newUserName = fetcher->getName(accessToken);
+    std::shared_ptr<model::User> newUser = make_shared<model::User>(accessToken, newUserName);
+    userRepository->addUser(newUser);
+    return newUser;
 }
 
 void model::UserService::addUser(shared_ptr<model::User> usu)

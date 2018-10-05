@@ -9,12 +9,29 @@
 #include <vector>
 #include <QDebug>
 #include <1-applicationServices/ListUsers.h>
+#include <1-applicationServices/CreateUser.h>
 #include "UserWindow.h"
+
+void MainWindow::btnOpenNewUserWindowPressed()
+{
+    this->createNewUserApplicationService->beginCreation();
+    ////Alguma coisa tem que ser feita em resposta à criação do usuário
+    /// Alguma coisa tem que ser feita em resposta ao fracasso.
+}
+
+void MainWindow::successfulNewUserCreation(std::shared_ptr<model::User> user)
+{
+    this->userWindow = make_unique<UserWindow>(user, nullptr);
+    this->userWindow->show();
+    this->hide();
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     listUsersApplicationService(new applicationServices::ListUsers()),
     ui(new Ui::MainWindow)
 {
+    this->createNewUserApplicationService = make_unique<applicationServices::CreateUser>(this);
     ui->setupUi(this);
     this->users = listUsersApplicationService->getUserList();
     //monta a lista
@@ -29,6 +46,12 @@ MainWindow::MainWindow(QWidget *parent) :
         });
         this->ui->centralWidget->layout()->addWidget(newButton);
     });
+    //void newUserCreated(std::shared_ptr<model::User> user);
+    connect(this->createNewUserApplicationService.get(), &applicationServices::CreateUser::newUserCreated,
+            this, &MainWindow::successfulNewUserCreation);
+    connect(ui->btnNewUser, &QPushButton::pressed,
+            this, &MainWindow::btnOpenNewUserWindowPressed);
+
 /////O PASSADO DISTANTE...
 //    //instancia o authenticationService
 //    model::AuthenticationService* authService = new model::AuthenticationService(this);
@@ -69,12 +92,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::successfulAuthentication(infra::AuthenticationDTO authDto)
-{
-//// O PASSADO DISTANTE
-//    //ligar o authDTO ao meu usuário
-//    std::shared_ptr<model::UserSpotifyData> sd = make_shared<model::UserSpotifyData>(authDto);
-//    userService->updateUserSpotifyData(user, sd);
-//    qDebug("ok?");
-}
+
+
+//void MainWindow::successfulAuthentication(infra::AuthenticationDTO authDto)
+//{
+////// O PASSADO DISTANTE
+////    //ligar o authDTO ao meu usuário
+////    std::shared_ptr<model::UserSpotifyData> sd = make_shared<model::UserSpotifyData>(authDto);
+////    userService->updateUserSpotifyData(user, sd);
+////    qDebug("ok?");
+//}
 

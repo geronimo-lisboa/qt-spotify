@@ -37,6 +37,7 @@ namespace model {
         void authenticationSuccessfulSlot(QString code);
     signals:
         void authenticationSuccessful(infra::AuthenticationDTO authDto);
+        void authenticationFailed();
     };
 }
 #endif

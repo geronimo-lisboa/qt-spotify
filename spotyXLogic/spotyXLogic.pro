@@ -37,7 +37,9 @@ SOURCES += \
     3-infra/tokenRefresh/TokenRefresh.cpp \
     3-infra/PostContentBuilder.cpp \
     3-infra/EncodeClientIdClientSecret.cpp \
-    1-applicationServices/ListUsers.cpp
+    1-applicationServices/ListUsers.cpp \
+    1-applicationServices/CreateUser.cpp \
+    3-infra/UserDataFetcher.cpp
 
 
 HEADERS += \
@@ -59,7 +61,9 @@ HEADERS += \
     3-infra/tokenRefresh/TokenRefresh.h \
     3-infra/PostContentBuilder.h \
     3-infra/EncodeClientIdClientSecret.h \
-    1-applicationServices/ListUsers.h
+    1-applicationServices/ListUsers.h \
+    1-applicationServices/CreateUser.h \
+    3-infra/UserDataFetcher.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
