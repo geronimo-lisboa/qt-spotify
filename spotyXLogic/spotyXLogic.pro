@@ -39,7 +39,15 @@ SOURCES += \
     3-infra/EncodeClientIdClientSecret.cpp \
     1-applicationServices/ListUsers.cpp \
     1-applicationServices/CreateUser.cpp \
-    3-infra/UserDataFetcher.cpp
+    3-infra/UserDataFetcher.cpp \
+    1-applicationServices/SearchMusic.cpp \
+    2-model/MusicService.cpp \
+    3-infra/MusicFetcher.cpp \
+    2-model/entities/Music.cpp \
+    1-applicationServices/ManagePlaylist.cpp \
+    2-model/entities/Playlist.cpp \
+    2-model/PlaylistService.cpp \
+    3-infra/repository/PlaylistRepository.cpp
 
 
 HEADERS += \
@@ -63,7 +71,15 @@ HEADERS += \
     3-infra/EncodeClientIdClientSecret.h \
     1-applicationServices/ListUsers.h \
     1-applicationServices/CreateUser.h \
-    3-infra/UserDataFetcher.h
+    3-infra/UserDataFetcher.h \
+    1-applicationServices/SearchMusic.h \
+    2-model/MusicService.h \
+    3-infra/MusicFetcher.h \
+    2-model/entities/Music.h \
+    1-applicationServices/ManagePlaylist.h \
+    2-model/entities/Playlist.h \
+    2-model/PlaylistService.h \
+    3-infra/repository/PlaylistRepository.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

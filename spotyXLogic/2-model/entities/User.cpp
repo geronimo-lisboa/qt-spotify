@@ -54,6 +54,16 @@ void model::User::setSpotifyData(shared_ptr<model::UserSpotifyData> d)
     spotifyData = d;
 }
 
+void model::User::setPlaylists(unique_ptr<vector<shared_ptr<model::Playlist> > > p)
+{
+    this->playlists = move(p);
+}
+
+vector<shared_ptr<model::Playlist> > *model::User::getPlaylist()
+{
+    return playlists.get();
+}
+
 bool model::User::operator==(const model::User &b)
 {
     bool x = (b.name == this->name) ;

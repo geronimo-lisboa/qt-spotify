@@ -7,9 +7,19 @@
 #include<QSqlQuery>
 #include<QVariant>
 #include<QStringList>
-infra::UserRepository::UserRepository(QSqlDatabase &db, shared_ptr<UserSpotifyDataRepository> spotifyRepo):
+unique_ptr<model::User> infra::UserRepository::createFromQuery(QSqlQuery &query)const
+{
+    auto id = query.value("id").toInt();
+    auto name = query.value("name").toString();
+    auto code = query.value("code").toString();
+    unique_ptr<model::User> u = make_unique<model::User>(code, name, id);
+    return u;
+}
+
+infra::UserRepository::UserRepository(QSqlDatabase &db, shared_ptr<UserSpotifyDataRepository> spotifyRepo, shared_ptr<PlaylistRepository> playRepo):
     database(db),
-    spotifyRepository(spotifyRepo)
+    spotifyRepository(spotifyRepo),
+    playlistRepository(playRepo)
 {
 
 }
@@ -69,17 +79,18 @@ unique_ptr<infra::UserRepository::ListOfUsers> infra::UserRepository::getUsers()
     query.exec();
     while(query.next())
     {
-        //TODO: por isso aqui em um método pra limpar o código
-        auto id = query.value("id").toInt();
-        auto name = query.value("name").toString();
-        auto code = query.value("code").toString();
-        unique_ptr<model::User> u = make_unique<model::User>(code, name, id);
+        unique_ptr<model::User> u = createFromQuery(query);
         lst->push_back(move(u));
     }
     //Eu sei que o certo seria pegar a spotify data com um join mas to com pressa
     for_each(lst->begin(), lst->end(), [sr = spotifyRepository](shared_ptr<model::User> user){
         auto data = sr->getSpotifyData(*user);
         user->setSpotifyData(data);
+    });
+    //pega as listas de musica
+    for_each(lst->begin(), lst->end(),[this, pr = playlistRepository](shared_ptr<model::User> user){
+        auto lst = playlistRepository->getPlaylists(user);
+        user->setPlaylists(move(lst));
     });
     return lst;
 }
@@ -93,11 +104,7 @@ unique_ptr<infra::UserRepository::ListOfUsers> infra::UserRepository::getUsers(Q
     query.exec();
     while(query.next())
     {
-        //TODO: por isso aqui em um método pra limpar o código
-        auto id = query.value("id").toInt();
-        auto name = query.value("name").toString();
-        auto code = query.value("code").toString();
-        unique_ptr<model::User> u = make_unique<model::User>(code, name, id);
+        unique_ptr<model::User> u = createFromQuery(query);
         lst->push_back(move(u));
     }
     //Eu sei que o certo seria pegar a spotify data com um join mas to com pressa
@@ -105,7 +112,11 @@ unique_ptr<infra::UserRepository::ListOfUsers> infra::UserRepository::getUsers(Q
         auto data = sr->getSpotifyData(*user);
         user->setSpotifyData(data);
     });
-
+    //pega as listas de musica
+    for_each(lst->begin(), lst->end(),[this, pr = playlistRepository](shared_ptr<model::User> user){
+        auto lst = playlistRepository->getPlaylists(user);
+        user->setPlaylists(move(lst));
+    });
     return lst;
 
 }
@@ -119,17 +130,18 @@ unique_ptr<infra::UserRepository::ListOfUsers> infra::UserRepository::getUsers(c
     query.exec();
     while(query.next())
     {
-        //TODO: por isso aqui em um método pra limpar o código
-        auto id = query.value("id").toInt();
-        auto name = query.value("name").toString();
-        auto code = query.value("code").toString();
-        unique_ptr<model::User> u = make_unique<model::User>(code, name, id);
+        unique_ptr<model::User> u = createFromQuery(query);
         lst->push_back(move(u));
     }
     //Eu sei que o certo seria pegar a spotify data com um join mas to com pressa
     for_each(lst->begin(), lst->end(), [sr = spotifyRepository](shared_ptr<model::User> user){
         auto data = sr->getSpotifyData(*user);
         user->setSpotifyData(data);
+    });
+    //pega as listas de musica
+    for_each(lst->begin(), lst->end(),[this, pr = playlistRepository](shared_ptr<model::User> user){
+        auto lst = playlistRepository->getPlaylists(user);
+        user->setPlaylists(move(lst));
     });
     return lst;
 }

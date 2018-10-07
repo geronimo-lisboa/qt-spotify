@@ -5,8 +5,10 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT       += network sql webenginewidgets
+QT       += network sql webenginewidgets  multimedia multimediawidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+
 
 TARGET = spotyXGUI
 TEMPLATE = app

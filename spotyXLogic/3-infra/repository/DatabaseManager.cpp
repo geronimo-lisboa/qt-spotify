@@ -19,6 +19,11 @@ std::shared_ptr<infra::UserSpotifyDataRepository> infra::DatabaseManager::getUse
     return this->userSpotifyDataRepository;
 }
 
+std::shared_ptr<infra::PlaylistRepository> infra::DatabaseManager::getPlaylistRepository()
+{
+    return this->playlistRepository;
+}
+
 infra::DatabaseManager::~DatabaseManager()
 {
     mDatabase->close();
@@ -34,7 +39,10 @@ infra::DatabaseManager::DatabaseManager(const QString &path):
     userSpotifyDataRepository = std::make_shared<UserSpotifyDataRepository>(*mDatabase);
     userSpotifyDataRepository->init();
 
-    userRepository = std::make_shared<UserRepository>(*mDatabase,userSpotifyDataRepository);
+    playlistRepository = std::make_shared<PlaylistRepository>(*mDatabase);
+    playlistRepository->init();
+
+    userRepository = std::make_shared<UserRepository>(*mDatabase,userSpotifyDataRepository, playlistRepository);
     userRepository->init();
 }
 
