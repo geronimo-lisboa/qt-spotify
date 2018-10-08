@@ -15,8 +15,7 @@
 void MainWindow::btnOpenNewUserWindowPressed()
 {
     this->createNewUserApplicationService->beginCreation();
-    ////Alguma coisa tem que ser feita em resposta à criação do usuário
-    /// Alguma coisa tem que ser feita em resposta ao fracasso.
+
 }
 
 void MainWindow::successfulNewUserCreation(std::shared_ptr<model::User> user)
@@ -25,6 +24,13 @@ void MainWindow::successfulNewUserCreation(std::shared_ptr<model::User> user)
 
     this->userWindow->show();
     this->hide();
+}
+
+void MainWindow::userDeniedPermission()
+{
+    QMessageBox msgBox;
+    msgBox.setText("Você não deu as permissões necessárias. Sem elas não vai funcionar");
+    msgBox.exec();
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -48,8 +54,17 @@ MainWindow::MainWindow(QWidget *parent) :
         this->ui->centralWidget->layout()->addWidget(newButton);
     });
     //void newUserCreated(std::shared_ptr<model::User> user);
-    connect(this->createNewUserApplicationService.get(), &applicationServices::CreateUser::newUserCreated,
-            this, &MainWindow::successfulNewUserCreation);
+    connect(this->createNewUserApplicationService.get(),
+            &applicationServices::CreateUser::newUserCreated,
+            this,
+            &MainWindow::successfulNewUserCreation);
+
+    connect(this->createNewUserApplicationService.get(),
+            &applicationServices::CreateUser::userRefused,
+            this,
+            &MainWindow::userDeniedPermission);
+
+
     connect(ui->btnNewUser, &QPushButton::pressed,
             this, &MainWindow::btnOpenNewUserWindowPressed);
 }

@@ -127,6 +127,10 @@ QWidget* UserWindow::assembleMusicRecord(std::shared_ptr<model::Music> m)
 
 void UserWindow::updateSelectedPlaylistTracklist(shared_ptr<model::Playlist> lst)
 {
+    if(selectedPlaylist == nullptr)
+    {
+        return;//Só vai acontecer em um usuário completamente novo no sistema, sem playlist alguma.
+    }
     this->selectedPlaylist = lst;
     //limpa o campo da playlist
     clearPointerList(listOfMusics);
@@ -216,10 +220,17 @@ void UserWindow::assemblePlaylistSet()
 {
     clearPointerList(listOfPlaylists);
     auto playlistSet = this->user->getPlaylist();
-    QWidget* wid = ui->scrollAreaWidgetContents_2;
-    for_each(playlistSet->begin(), playlistSet->end(),[wid, this](shared_ptr<model::Playlist> p){
-        QWidget* w = assembleUserPlaylistSetRecord(p);
-        listOfPlaylists.push_back(w);
-        wid->layout()->addWidget(w);
-    });
+    if(playlistSet==nullptr)
+    {
+        return;
+    }
+    else
+    {
+        QWidget* wid = ui->scrollAreaWidgetContents_2;
+        for_each(playlistSet->begin(), playlistSet->end(),[wid, this](shared_ptr<model::Playlist> p){
+            QWidget* w = assembleUserPlaylistSetRecord(p);
+            listOfPlaylists.push_back(w);
+            wid->layout()->addWidget(w);
+        });
+    }
 }

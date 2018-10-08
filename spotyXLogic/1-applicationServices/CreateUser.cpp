@@ -35,5 +35,5 @@ void applicationServices::CreateUser::successfulAuthentication(infra::Authentica
 
 void applicationServices::CreateUser::failerAuthentication()
 {
-    qDebug("erro?");
+    emit userRefused();
 }

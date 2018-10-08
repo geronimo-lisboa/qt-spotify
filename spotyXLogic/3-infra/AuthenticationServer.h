@@ -16,6 +16,7 @@ namespace infra
         void service(HttpRequest &req, HttpResponse &resp)override;
     signals:
         void codeArrived(QString code);
+        void accessDenied();
     };
 }
 #endif

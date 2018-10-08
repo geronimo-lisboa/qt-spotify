@@ -47,6 +47,8 @@ model::AuthenticationService::AuthenticationService(QObject *parent)
     //liga ao sinal do servidor
     connect(authenticationServer.get(), &infra::AuthenticationServer::codeArrived,
             this, &AuthenticationService::authenticationSuccessfulSlot);
+    connect(authenticationServer.get(), &infra::AuthenticationServer::accessDenied,
+            this, &AuthenticationService::accessDeniedSlot);
 }
 
 model::AuthenticationService::~AuthenticationService()
@@ -98,10 +100,19 @@ void model::AuthenticationService::beginAuthentication()
 
 void model::AuthenticationService::authenticationSuccessfulSlot(QString code)
 {
-    //fecha a janela de autenticação
-    authenticationPage->close();
     //agora é hora de pedir o access e refresh tokens
     auto dto = this->getAcessAndRefreshTokens(code);
+    //fecha a janela de autenticação
+    authenticationPage->close();
+
     //emite o sinal
     emit authenticationSuccessful(dto);
+}
+
+void model::AuthenticationService::accessDeniedSlot()
+{
+    //fecha a janela de autenticação
+    authenticationPage->close();
+    //o maluco recusou, preciso informar à quem pediu
+    emit authenticationFailed();
 }

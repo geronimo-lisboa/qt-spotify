@@ -35,6 +35,7 @@ namespace model {
         void beginAuthentication();
     private slots:
         void authenticationSuccessfulSlot(QString code);
+        void accessDeniedSlot();
     signals:
         void authenticationSuccessful(infra::AuthenticationDTO authDto);
         void authenticationFailed();

@@ -36,6 +36,7 @@ public slots:
     void btnOpenNewUserWindowPressed();
     //void successfulAuthentication(infra::AuthenticationDTO authDto);
     void successfulNewUserCreation(std::shared_ptr<model::User> user);
+    void userDeniedPermission();
 private:
     Ui::MainWindow *ui;
 };

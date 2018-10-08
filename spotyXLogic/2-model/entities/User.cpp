@@ -59,8 +59,12 @@ void model::User::setPlaylists(unique_ptr<vector<shared_ptr<model::Playlist> > >
     this->playlists = move(p);
 }
 
-vector<shared_ptr<model::Playlist> > *model::User::getPlaylist()
+vector<shared_ptr<model::Playlist>> *model::User::getPlaylist()
 {
+    if(playlists==nullptr)
+    {
+        playlists = std::make_unique<vector<shared_ptr<model::Playlist>>>();
+    }
     return playlists.get();
 }
 

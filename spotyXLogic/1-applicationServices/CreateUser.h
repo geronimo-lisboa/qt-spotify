@@ -31,6 +31,7 @@ namespace applicationServices {
         //std::shared_ptr<model::User> user;
     signals:
         void newUserCreated(std::shared_ptr<model::User> user);
+        void userRefused();
     };
 }
 #endif

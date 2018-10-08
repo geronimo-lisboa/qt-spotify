@@ -27,7 +27,7 @@ shared_ptr<model::Playlist> applicationServices::ManagePlaylist::chooseInitialPl
 {
     ///dummy
     /// poderia estar vindo do banco, guardando qual foi a ultima que o cara ouviu
-    if(user->getPlaylist()->size() > 0)
+    if(user->getPlaylist()!=nullptr && user->getPlaylist()->size() > 0)
     {
         return (*(user->getPlaylist()))[0];
     }
