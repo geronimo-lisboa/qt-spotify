@@ -28,9 +28,7 @@ private:
     std::unique_ptr<applicationServices::CreateUser> createNewUserApplicationService;
     std::unique_ptr<std::vector<std::shared_ptr<model::User>>> users;
     std::unique_ptr<UserWindow> userWindow;
-////O PASSADO DISTANTE
-//    std::unique_ptr<model::UserService> userService;
-//    std::shared_ptr<model::User> user;    
+
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();

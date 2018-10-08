@@ -47,7 +47,9 @@ SOURCES += \
     1-applicationServices/ManagePlaylist.cpp \
     2-model/entities/Playlist.cpp \
     2-model/PlaylistService.cpp \
-    3-infra/repository/PlaylistRepository.cpp
+    3-infra/repository/PlaylistRepository.cpp \
+    3-infra/repository/MusicRepository.cpp \
+    1-applicationServices/UpdateToken.cpp
 
 
 HEADERS += \
@@ -79,7 +81,9 @@ HEADERS += \
     1-applicationServices/ManagePlaylist.h \
     2-model/entities/Playlist.h \
     2-model/PlaylistService.h \
-    3-infra/repository/PlaylistRepository.h
+    3-infra/repository/PlaylistRepository.h \
+    3-infra/repository/MusicRepository.h \
+    1-applicationServices/UpdateToken.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

@@ -7,11 +7,12 @@
 #include <QVariant>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-
+#include <memory>
+#include "3-infra/repository/MusicRepository.h"
 infra::PlaylistRepository::PlaylistRepository(QSqlDatabase &db)
     :database(db)
 {
-
+    musicRepository = make_shared<infra::MusicRepository>(db);
 }
 
 void infra::PlaylistRepository::init() const
@@ -77,6 +78,8 @@ unique_ptr<infra::PlaylistRepository::ListOfPlaylists> infra::PlaylistRepository
     while (query.next()) {
         auto p = make_shared<model::Playlist>(query.value("id").toInt(), query.value("idUser").toInt(), query.value("name").toString());
         lst->push_back(p);
+        auto musics = musicRepository->getMusic(p);
+        p->musics = move(musics);
     }
     return lst;
 
@@ -91,7 +94,10 @@ unique_ptr<infra::PlaylistRepository::ListOfPlaylists> infra::PlaylistRepository
     auto lst = make_unique<ListOfPlaylists>();
     while (query.next()) {
         auto p = make_shared<model::Playlist>(query.value("id").toInt(), query.value("idUser").toInt(), query.value("name").toString());
+        //pega as musicas
         lst->push_back(p);
+        auto musics = musicRepository->getMusic(p);
+        p->musics = move(musics);
     }
     return lst;
 

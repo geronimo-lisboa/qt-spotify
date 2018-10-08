@@ -9,6 +9,7 @@ namespace model {
     class Music{
     public:
         QString id;
+        int idPlaylist;        
         QString albumName;
         QVector<QString> artistVector;
         QString name;

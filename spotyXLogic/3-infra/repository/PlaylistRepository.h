@@ -9,10 +9,13 @@ namespace model {
     class User;
 }
 namespace infra {
+    class MusicRepository;
+
     class PlaylistRepository
     {
     private:
         QSqlDatabase& database;
+        shared_ptr<MusicRepository> musicRepository;
     public:
         typedef vector<shared_ptr<model::Playlist>> ListOfPlaylists;
         PlaylistRepository(QSqlDatabase& db);

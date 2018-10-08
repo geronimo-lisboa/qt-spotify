@@ -89,8 +89,8 @@ unique_ptr<infra::UserRepository::ListOfUsers> infra::UserRepository::getUsers()
     });
     //pega as listas de musica
     for_each(lst->begin(), lst->end(),[this, pr = playlistRepository](shared_ptr<model::User> user){
-        auto lst = playlistRepository->getPlaylists(user);
-        user->setPlaylists(move(lst));
+        auto playLists = playlistRepository->getPlaylists(user);
+        user->setPlaylists(move(playLists));
     });
     return lst;
 }

@@ -10,8 +10,14 @@
 #include <3-infra/EncodeClientIdClientSecret.h>
 #include <QTextCodec>
 #include <1-applicationServices/ListUsers.h>
+#include <3-infra/repository/MusicRepository.h>
 
 using namespace std;
+TEST(MusicTest, IsInsertWorking)
+{
+    auto musicRepo = infra::DatabaseManager::instance().getMusicRepository();
+}
+
 TEST(ListUserTest, IsTheListCorrect)
 {
     auto userRepo = infra::DatabaseManager::instance().getUserRepository();

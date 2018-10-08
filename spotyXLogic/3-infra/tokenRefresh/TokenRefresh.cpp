@@ -50,5 +50,6 @@ infra::AuthenticationDTO infra::TokenRefresh::refresh(model::User& user)
     authenticationDto.expiresIn = rootObject.value("expires_in").toInt();
     authenticationDto.refreshToken = user.getSpotifyData()->refreshToken;
 
+    qDebug("refresh de token");
     return authenticationDto;
 }
