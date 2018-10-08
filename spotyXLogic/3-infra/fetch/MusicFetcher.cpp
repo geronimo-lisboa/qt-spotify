@@ -1,5 +1,5 @@
 #include "MusicFetcher.h"
-#include "PostContentBuilder.h"
+#include "3-infra/utils/PostContentBuilder.h"
 #include <QEventLoop>
 #include <QNetworkAccessManager>
 #include <QUrl>

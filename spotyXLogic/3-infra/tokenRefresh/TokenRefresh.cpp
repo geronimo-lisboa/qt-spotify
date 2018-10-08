@@ -1,7 +1,7 @@
 #include "TokenRefresh.h"
 #include "3-infra/authenticaton/AuthenticationDTO.h"
-#include "3-infra/PostContentBuilder.h"
-#include "3-infra/EncodeClientIdClientSecret.h"
+#include "3-infra/utils/PostContentBuilder.h"
+#include "3-infra/utils/EncodeClientIdClientSecret.h"
 #include <QEventLoop>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
