@@ -1,5 +1,5 @@
 QT -= gui
-QT += core network sql webenginewidgets
+QT += core network sql webenginewidgets   multimedia multimediawidgets
 
 CONFIG += c++11 console
 CONFIG -= app_bundle

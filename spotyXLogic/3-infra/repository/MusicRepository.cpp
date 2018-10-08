@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <exceptions/SqlException.h>
 
 
 infra::MusicRepository::MusicRepository(QSqlDatabase &db):
@@ -69,6 +70,37 @@ void infra::MusicRepository::addMusic(shared_ptr<model::Music> m) const
         qDebug(lastError.toUtf8());
     }
     //m->id = query.lastInsertId().toInt();
+}
+
+shared_ptr<model::Music> infra::MusicRepository::getMusic(QString id)
+{
+    QSqlQuery query(database);
+    query.prepare("SELECT * FROM musics WHERE id = :id");
+    query.bindValue(":id", id);
+    bool ok = query.exec();
+    if(!ok)
+    {
+        QString lastQuery = query.lastQuery();
+        QString lastError = query.lastError().text();
+        qDebug(lastQuery.toUtf8());
+        qDebug(lastError.toUtf8());
+        throw SqlException();
+    }
+    auto m = make_shared<model::Music>();
+    while (query.next()) {
+        m->albumName = query.value("albumName").toString();
+        QStringList parts = query.value("artists").toString().split(QRegExp("(\\;)"));
+        QVector<QString> vec;
+        for(int i=0; i<parts.size(); i++)
+            vec.push_back(parts[i]);
+        m->artistVector = vec;
+        m->id = query.value("id").toString();
+        m->idPlaylist = query.value("idPlaylist").toInt();
+        m->name = query.value("name").toString();
+        m->previewUrl = query.value("previewUrl").toString();
+        m->uri = query.value("uri").toString();
+    }
+    return m;
 }
 
 unique_ptr<vector<shared_ptr<model::Music>>> infra::MusicRepository::getMusic(shared_ptr<model::Playlist> p)const

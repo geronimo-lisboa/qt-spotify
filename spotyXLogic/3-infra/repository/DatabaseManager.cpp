@@ -3,6 +3,23 @@
 #include "3-infra/repository/UserRepository.h"
 #include "3-infra/repository/UserSpotifyDataRepository.h"
 #include "3-infra/repository/MusicRepository.h"
+#include <QFile>
+#include <QString>
+#include <QtCore>
+
+void infra::DatabaseManager::purgeDatabase()
+{
+    qDebug("Deletando banco. Espero que vc saiba o que ta fazendo...");
+    //deleta o arquivo do banco
+    mDatabase->close();
+    QFile file(DATABASE_FILENAME);
+    file.remove();
+    //roda os inits
+    mDatabase->setDatabaseName(DATABASE_FILENAME);
+    mDatabase->open();
+    initTables();
+}
+
 infra::DatabaseManager &infra::DatabaseManager::instance()
 {
     static DatabaseManager singleton;
@@ -35,12 +52,8 @@ infra::DatabaseManager::~DatabaseManager()
     delete mDatabase;
 }
 
-infra::DatabaseManager::DatabaseManager(const QString &path):
-    mDatabase(new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE")))
+void infra::DatabaseManager::initTables()
 {
-    mDatabase->setDatabaseName(path);
-    mDatabase->open();
-
     musicRepository = std::make_unique<MusicRepository>(*mDatabase);
     musicRepository->init();
 
@@ -52,5 +65,14 @@ infra::DatabaseManager::DatabaseManager(const QString &path):
 
     userRepository = std::make_shared<UserRepository>(*mDatabase,userSpotifyDataRepository, playlistRepository);
     userRepository->init();
+}
+
+infra::DatabaseManager::DatabaseManager(const QString &path):
+    mDatabase(new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE")))
+{
+    mDatabase->setDatabaseName(path);
+    mDatabase->open();
+
+    initTables();
 }
 

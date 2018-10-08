@@ -16,6 +16,7 @@ namespace infra
     class DatabaseManager
     {
     public:
+        void purgeDatabase();
         static DatabaseManager& instance();
         std::shared_ptr<UserRepository> getUserRepository();
         std::shared_ptr<UserSpotifyDataRepository> getUserSpotifyDataRepository();
@@ -23,6 +24,7 @@ namespace infra
         std::shared_ptr<MusicRepository> getMusicRepository();
         ~DatabaseManager();
     protected:
+        void initTables();
         std::shared_ptr<UserRepository> userRepository;
         std::shared_ptr<UserSpotifyDataRepository> userSpotifyDataRepository;
         std::shared_ptr<PlaylistRepository> playlistRepository;
